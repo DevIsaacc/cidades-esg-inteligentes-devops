@@ -1,0 +1,59 @@
+name: Pipeline CI/CD - Cidades ESG (.NET)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+    name: Build e Testes Automatizados
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar o .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restaurar dependências
+        run: dotnet restore ./src/SeuProjeto.csproj
+
+      - name: Build da aplicação
+        run: dotnet build ./src/SeuProjeto.csproj --no-restore -c Release
+
+      - name: Executar testes
+        run: dotnet test ./tests/SeusTestes.csproj --no-build --verbosity normal
+
+  deploy_staging:
+    name: Deploy em Staging
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        
+      - name: Simulação de Deploy (Staging)
+        run: |
+          echo "✅ Build e testes passaram!"
+          echo "🚀 Realizando deploy no ambiente de STAGING..."
+          echo "Iniciando os containers com docker-compose up -d"
+
+  deploy_production:
+    name: Deploy em Produção
+    needs: deploy_staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        
+      - name: Simulação de Deploy (Produção)
+        run: |
+          echo "✅ Validação em Staging concluída!"
+          echo "🚀 Realizando deploy no ambiente de PRODUÇÃO..."
+          echo "Iniciando os containers de produção..."
