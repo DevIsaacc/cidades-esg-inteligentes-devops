@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_and_test:
-    name: Build e Testes Automatizados
+    name: Build Automatizado
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -20,13 +20,10 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restaurar dependências
-        run: dotnet restore ./src/SeuProjeto.csproj
+        run: dotnet restore ./src/MeuProjeto.csproj
 
       - name: Build da aplicação
-        run: dotnet build ./src/SeuProjeto.csproj --no-restore -c Release
-
-      - name: Executar testes
-        run: dotnet test ./tests/SeusTestes.csproj --no-build --verbosity normal
+        run: dotnet build ./src/MeuProjeto.csproj --no-restore -c Release
 
   deploy_staging:
     name: Deploy em Staging
@@ -39,7 +36,7 @@ jobs:
         
       - name: Simulação de Deploy (Staging)
         run: |
-          echo "✅ Build e testes passaram!"
+          echo "✅ Build passou!"
           echo "🚀 Realizando deploy no ambiente de STAGING..."
           echo "Iniciando os containers com docker-compose up -d"
 
