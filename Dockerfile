@@ -19,4 +19,4 @@ EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
 
 # Comando para iniciar a aplicação (ajuste o nome da DLL)
-ENTRYPOINT ["dotnet", "SeuProjeto.dll"]
+ENTRYPOINT ["dotnet", "MeuProjeto.dll"]
